@@ -45,5 +45,4 @@ Our favourite contributions are those that help us improve the project, whether 
 If you've read this far....give me a ⭐️!
 
 ## 📝 License
-
-This project is licensed by Microverse and the Odin Project
+MIT
