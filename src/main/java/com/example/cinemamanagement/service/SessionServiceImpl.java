@@ -1,5 +1,6 @@
 package com.example.cinemamanagement.service;
 
+import com.example.cinemamanagement.exception.EntityDoesNotExistsException;
 import com.example.cinemamanagement.model.Movie;
 import com.example.cinemamanagement.model.Room;
 import com.example.cinemamanagement.model.Session;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional()
 @AllArgsConstructor
 public class SessionServiceImpl implements  SessionService {
 
@@ -28,8 +29,10 @@ public class SessionServiceImpl implements  SessionService {
     @Override
     public Long createSession(Long movieId, Long roomId, LocalDateTime startTime) {
         Optional<Movie> movieOptional = movieRepository.findById(movieId);
+        if(!movieOptional.isPresent()) throw new EntityDoesNotExistsException("Movie, id= "+ movieId);
 
         Optional<Room> roomOptional = roomRepository.findById(roomId);
+        if(!roomOptional.isPresent()) throw new EntityDoesNotExistsException("Room, id= "+ roomId);
 
         Session session = new Session(null, startTime);
         session.setRoom(roomOptional.get());

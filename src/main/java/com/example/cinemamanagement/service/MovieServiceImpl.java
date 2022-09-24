@@ -1,5 +1,6 @@
 package com.example.cinemamanagement.service;
 
+import com.example.cinemamanagement.exception.EntityDoesNotExistsException;
 import com.example.cinemamanagement.model.Genres;
 import com.example.cinemamanagement.model.Movie;
 import com.example.cinemamanagement.model.Poster;
@@ -14,15 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @AllArgsConstructor
 public class MovieServiceImpl implements MovieService {
 
     private MovieRepository movieRepository;
     private PosterRepository posterRepository;
-
-
-
 
     @Override
     @Transactional
@@ -30,7 +28,6 @@ public class MovieServiceImpl implements MovieService {
         Movie movie = new Movie(null, title, category, length, description, requiredAge);
         movieRepository.save(movie);
         if(posterFilePath!=null) createPoster(movie, posterFilePath);
-
         return movie.getId();
     }
 
@@ -48,11 +45,6 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Page<Movie> getMoviesInCategory(Genres category, Pageable pageable) {
-        return null;
-    }
-
-    @Override
-    public Page<Movie> getMoviesInCateory(Genres category, Pageable pageable) {
         return movieRepository.findByCategory(category, pageable);
     }
 

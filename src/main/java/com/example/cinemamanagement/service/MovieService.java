@@ -14,8 +14,6 @@ public interface MovieService {
 
     Page<Movie> getMoviesInCategory(Genres category, Pageable pageable);
 
-    Page<Movie> getMoviesInCateory(Genres category, Pageable pageable);
-
     Page<Movie> getMovieByPartOfTitle(String partOfTitle, Pageable pageable);
 
     Page<Movie> getAllMovies(Pageable pageable);

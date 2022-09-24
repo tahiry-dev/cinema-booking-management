@@ -1,5 +1,6 @@
 package com.example.cinemamanagement.service;
 
+import com.example.cinemamanagement.exception.EntityDoesNotExistsException;
 import com.example.cinemamanagement.model.Movie;
 import com.example.cinemamanagement.model.Screening;
 import com.example.cinemamanagement.repository.MovieRepository;
@@ -16,7 +17,7 @@ import java.util.Optional;
 
 
 @Service
-@Transactional(readOnly = true)
+@Transactional()
 @AllArgsConstructor
 public class ScreeningServiceImpl implements ScreeningService{
     private ScreeningRepository screeningRepository ;
@@ -24,11 +25,13 @@ public class ScreeningServiceImpl implements ScreeningService{
 
 
     @Override
+    @Transactional
     public Long createScreening(String name, LocalDateTime startDate, List<Long> movieIds) {
         List<Movie> movies = new ArrayList<>();
         for (Long movieId: movieIds
         ) {
             Optional<Movie> movieOptional = movieRepository.findById(movieId);
+            if (!movieOptional.isPresent()) throw new EntityDoesNotExistsException("Movie, id="+ movieId);
             movies.add(movieOptional.get());
         }
         Screening screening = new Screening(null, name, startDate);
@@ -42,8 +45,8 @@ public class ScreeningServiceImpl implements ScreeningService{
     }
 
     @Override
-    public Optional<Screening> getScreening(Long marathonId) {
-        return screeningRepository.findById(marathonId);
+    public Optional<Screening> getScreening(Long screeningId) {
+        return screeningRepository.findById(screeningId);
     }
 
     @Override

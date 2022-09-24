@@ -11,7 +11,7 @@ public interface ScreeningService {
 
     Long createScreening(String name, LocalDateTime startTime, List<Long> movies);
 
-    Optional<Screening> getScreening(Long marathonId);
+    Optional<Screening> getScreening(Long screeningId);
 
     List<Screening> getAllScreenings();
 

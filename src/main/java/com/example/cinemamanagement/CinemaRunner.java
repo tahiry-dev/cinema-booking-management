@@ -1,18 +1,19 @@
 package com.example.cinemamanagement;
 
 import com.example.cinemamanagement.model.*;
-import com.example.cinemamanagement.service.MovieService;
 import com.example.cinemamanagement.service.ScreeningService;
+import com.example.cinemamanagement.service.MovieService;
 import com.example.cinemamanagement.service.SessionService;
 import com.example.cinemamanagement.service.TicketService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -113,7 +114,7 @@ public class CinemaRunner implements CommandLineRunner {
 
         List<Screening> screenings = screeningService.getAllScreenings();
         LOG.info("15. Screening, amount of screenings: {}", screenings.size());
-        screenings.forEach(marathon -> LOG.info("  {}", marathon));
+        screenings.forEach(screening -> LOG.info("  {}", screening));
 
         screeningService.removeScreening(newScreeningId);
     }

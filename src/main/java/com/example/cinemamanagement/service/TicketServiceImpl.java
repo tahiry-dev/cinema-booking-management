@@ -1,6 +1,8 @@
 package com.example.cinemamanagement.service;
 
 
+import com.example.cinemamanagement.exception.BusinessException;
+import com.example.cinemamanagement.exception.EntityDoesNotExistsException;
 import com.example.cinemamanagement.model.Session;
 import com.example.cinemamanagement.model.Ticket;
 import com.example.cinemamanagement.repository.SessionRepository;
@@ -15,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional()
 @AllArgsConstructor
 public class TicketServiceImpl implements TicketService {
     private TicketRepository ticketRepository;
@@ -25,7 +27,10 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public Long newTicket(Long sessionId, String seat, BigDecimal price) {
         Optional<Session> sessionOptional = sessionRepository.findById(sessionId);
+        if (!sessionOptional.isPresent()) throw new EntityDoesNotExistsException("Session, id=" + sessionId);
+
         Long amountOfTicketsInSession = ticketRepository.countBySession(sessionOptional.get());
+        if (amountOfTicketsInSession==sessionOptional.get().getRoom().getCapacity()) throw new BusinessException("All tickets have been sold out. SessionId="+ sessionId);
 
         Ticket ticket = new Ticket(null, seat, price);
         sessionOptional.get().addTicket(ticket);

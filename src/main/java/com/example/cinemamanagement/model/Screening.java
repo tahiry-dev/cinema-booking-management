@@ -39,6 +39,4 @@ public class Screening extends AbstractEqualsAndHashCode {
         if (movies == null) movies = new ArrayList<>();
         return movies;
     }
-
-
 }
